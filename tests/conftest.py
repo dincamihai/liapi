@@ -45,6 +45,13 @@ def handler(load_scenario_response):
         return APIWrapper('tests/sample.jmx')
 
 
+@pytest.fixture(scope='session')
+def activate_responses(request):
+    rsps =  responses.RequestsMock()
+    rsps.start()
+    request.addfinalizer(rsps.stop)
+
+
 @pytest.fixture(scope='function')
 def load_scenario_response(request):
     rsps =  responses.RequestsMock()

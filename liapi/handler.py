@@ -1,14 +1,18 @@
 import os
 import loadimpact
 from liapi.scriptcreator import LoadScriptGenerator
+from liapi.extractor import Extractor
 
 
 class APIWrapper(object):
 
     def __init__(self, jmx_file_path):
         TOKEN = os.environ.get('LOAD_IMPACT_TOKEN', '')
+        self.data = Extractor(jmx_file_path).data
         self.client = loadimpact.ApiTokenClient(api_token=TOKEN)
-        script = LoadScriptGenerator(jmx_file_path).script
+        script = LoadScriptGenerator(
+            self.data['domain'], self.data['targets']
+        ).script
         self.scenario = self.load_scenario(script)
 
     def load_scenario(self, script):

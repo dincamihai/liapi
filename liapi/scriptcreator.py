@@ -1,11 +1,11 @@
 import urllib
-from liapi.extractor import Extractor
 
 
 class LoadScriptGenerator(object):
 
-    def __init__(self, jmx_file_path):
-        self.data = Extractor(jmx_file_path).data
+    def __init__(self, domain, targets):
+        self.domain = domain
+        self.targets = targets
         self.script = self.get_script()
 
     def _get_batch_item(self, item_data):
@@ -19,7 +19,7 @@ class LoadScriptGenerator(object):
             '}}'
         ).format(
             scheme=scheme,
-            domain=self.data['domain'],
+            domain=self.domain,
             method=item_data['method'],
             path=item_data['path'],
             query_string=query_string
@@ -32,7 +32,7 @@ class LoadScriptGenerator(object):
             '})'
         )
         content_items = []
-        for idx, it in enumerate(self.data['targets']):
+        for idx, it in enumerate(self.targets):
             content_items.append(self._get_batch_item(it))
         content = ','.join(content_items)
         return script_pattern.format(content=content)

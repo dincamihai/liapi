@@ -19,3 +19,9 @@ def test_init_handler_with_file():
         expected='{"GET", "http://test.loadimpact.com/"}'
         value = mock_client.create_user_scenario.call_args[0][0]['load_script']
         assert expected in value
+
+
+def test_handler_data(load_scenario_response):
+    with load_scenario_response:
+        handler = APIWrapper('tests/sample.jmx')
+    assert handler.data

@@ -2,7 +2,7 @@ from liapi.scriptcreator import LoadScriptGenerator
 
 
 def test_creator_generates_request_batch(data):
-    generator = LoadScriptGenerator(data)
+    generator = LoadScriptGenerator(**data)
     expected = (
         'http.request_batch({'
             '{"GET", "http://test.loadimpact.com/"},'
