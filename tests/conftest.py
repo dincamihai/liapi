@@ -40,8 +40,8 @@ def data(targets):
 
 @pytest.fixture()
 def wrapper():
-    from apiwrapper.handler import APIWrapper
-    return APIWrapper('tests/sample.jmx')
+    from apiwrapper.handler import JMXHandler
+    return JMXHandler('tests/sample.jmx')
 
 
 @pytest.fixture(scope='session')

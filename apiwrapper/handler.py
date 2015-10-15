@@ -4,7 +4,7 @@ from apiwrapper.scriptcreator import LoadScriptGenerator
 from apiwrapper.extractor import Extractor
 
 
-class APIWrapper(object):
+class JMXHandler(object):
 
     def __init__(self, jmx_file_path):
         TOKEN = os.environ.get('LOAD_IMPACT_TOKEN', '')

@@ -1,16 +1,16 @@
 import mock
 import responses
-from apiwrapper.handler import APIWrapper
+from apiwrapper.handler import JMXHandler
 
 
-def test_load_scenario(wrapper, create_scenario_response):
+def test_create_scenario(wrapper, create_scenario_response):
     with responses.RequestsMock() as rsps:
         rsps.add(**create_scenario_response)
         scenario = wrapper.create_scenario()
     assert scenario.id == 82431
 
 
-def test_test_config(wrapper, create_scenario_response, create_config_response):
+def test_create_config(wrapper, create_config_response):
     with responses.RequestsMock() as rsps:
         rsps.add(**create_config_response)
         config = wrapper.create_test_config(1)
@@ -18,7 +18,7 @@ def test_test_config(wrapper, create_scenario_response, create_config_response):
 
 
 def test_wrapper_create_scenario():
-    wrapper = APIWrapper('tests/sample.jmx')
+    wrapper = JMXHandler('tests/sample.jmx')
     wrapper.client = mock.Mock()
     wrapper.create_scenario()
     expected='{"GET", "http://test.loadimpact.com/"}'
@@ -27,12 +27,12 @@ def test_wrapper_create_scenario():
 
 
 def test_wrapper_data():
-    wrapper = APIWrapper('tests/sample.jmx')
+    wrapper = JMXHandler('tests/sample.jmx')
     assert wrapper.data
 
 
 def test_create_test_config_call():
-    wrapper = APIWrapper('tests/sample.jmx')
+    wrapper = JMXHandler('tests/sample.jmx')
     wrapper.client = mock.Mock()
     wrapper.create_test_config(333)
     assert wrapper.client.create_test_config.call_args[0][0] == dict(
