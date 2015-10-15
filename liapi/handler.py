@@ -1,7 +1,7 @@
 import os
 import loadimpact
-from jmxextractor.extractor import Extractor
-from loadscriptcreator.scriptcreator import LoadScriptGenerator
+from liapi.extractor import Extractor
+from liapi.scriptcreator import LoadScriptGenerator
 
 
 class Handler(object):

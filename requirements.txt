@@ -1,2 +1,2 @@
 loadimpact==1.1.4
--e git+git://github.com/dincamihai/loadscriptcreator.git#egg=Package
+lxml==3.4.4

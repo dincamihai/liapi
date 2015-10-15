@@ -17,7 +17,7 @@ def test_init_handler_with_file():
         mock_get_client.return_value = mock_client
         handler = Handler('tests/sample.jmx')
         expected=(
-            'http.request_batch({{"GET", "http://test.loadimpact.com/"}})'
+            '{"GET", "http://test.loadimpact.com/"}'
         )
         value = mock_client.create_user_scenario.call_args[0][0]['load_script']
-        assert value == expected
+        assert expected in value
