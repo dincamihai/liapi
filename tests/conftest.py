@@ -39,10 +39,9 @@ def data(targets):
 
 
 @pytest.fixture()
-def handler(load_scenario_response):
+def wrapper():
     from apiwrapper.handler import APIWrapper
-    with load_scenario_response:
-        return APIWrapper('tests/sample.jmx')
+    return APIWrapper('tests/sample.jmx')
 
 
 @pytest.fixture(scope='session')
@@ -53,9 +52,8 @@ def activate_responses(request):
 
 
 @pytest.fixture(scope='function')
-def load_scenario_response(request):
-    rsps =  responses.RequestsMock()
-    rsps.add(
+def create_scenario_response(request):
+    return dict(
         method=responses.POST,
         url='https://api.loadimpact.com/v2/user-scenarios',
         status=201,
@@ -71,13 +69,11 @@ def load_scenario_response(request):
             }
         )
     )
-    return rsps
 
 
 @pytest.fixture(scope='function')
 def create_config_response(request):
-    rsps =  responses.RequestsMock()
-    rsps.add(
+    return dict(
         method=responses.POST,
         url='https://api.loadimpact.com/v2/test-configs',
         body=json.dumps({
@@ -111,4 +107,3 @@ def create_config_response(request):
         status=201,
         content_type='application/json',
     )
-    return rsps

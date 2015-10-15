@@ -10,20 +10,19 @@ class APIWrapper(object):
         TOKEN = os.environ.get('LOAD_IMPACT_TOKEN', '')
         self.data = Extractor(jmx_file_path).data
         self.client = loadimpact.ApiTokenClient(api_token=TOKEN)
-        script = LoadScriptGenerator(
-            self.data['domain'], self.data['targets']
-        ).script
-        self.scenario = self.load_scenario(script)
 
-    def load_scenario(self, script):
+    def create_scenario(self):
         return self.client.create_user_scenario(
             dict(
-                load_script=script,
-                name="test_scenario",
+                load_script=LoadScriptGenerator(
+                    self.data['domain'], self.data['targets']
+                ).script,
+                name="test_scenario"
             )
         )
 
     def create_test_config(self):
+        scenario = self.create_scenario()
         return self.client.create_test_config(
             {
                 'name': self.data['test_plan_name'],
@@ -33,7 +32,7 @@ class APIWrapper(object):
                     "load_schedule": [{"users": 10, "duration": 10}],
                     "tracks": [{
                         "clips": [{
-                            "user_scenario_id": self.scenario.id,
+                            "user_scenario_id": scenario.id,
                             "percent": 100
                         }],
                         "loadzone": loadimpact.LoadZone.AMAZON_US_ASHBURN
