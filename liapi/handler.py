@@ -3,7 +3,7 @@ import loadimpact
 from liapi.scriptcreator import LoadScriptGenerator
 
 
-class Handler(object):
+class APIWrapper(object):
 
     def __init__(self, jmx_file_path):
         TOKEN = os.environ.get('LOAD_IMPACT_TOKEN', '')

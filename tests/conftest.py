@@ -5,9 +5,9 @@ import json
 
 @pytest.fixture()
 def handler(load_scenario_response):
-    from liapi.handler import Handler
+    from liapi.handler import APIWrapper
     with load_scenario_response:
-        return Handler('tests/sample.jmx')
+        return APIWrapper('tests/sample.jmx')
 
 
 @pytest.fixture(scope='function')
