@@ -14,6 +14,7 @@ def test_test_config(wrapper, create_scenario_response, create_config_response):
     with responses.RequestsMock() as rsps:
         rsps.add(**create_config_response)
         config = wrapper.create_test_config(1)
+        assert config.id == 3204290
 
 
 def test_wrapper_create_scenario():
@@ -27,11 +28,10 @@ def test_wrapper_create_scenario():
 
 def test_wrapper_data():
     wrapper = APIWrapper('tests/sample.jmx')
-    wrapper.create_scenario()
     assert wrapper.data
 
 
-def test_wrapper_data():
+def test_create_test_config_call():
     wrapper = APIWrapper('tests/sample.jmx')
     wrapper.client = mock.Mock()
     wrapper.create_test_config(333)
