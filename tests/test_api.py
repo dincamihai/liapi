@@ -12,9 +12,8 @@ def test_load_scenario(wrapper, create_scenario_response):
 
 def test_test_config(wrapper, create_scenario_response, create_config_response):
     with responses.RequestsMock() as rsps:
-        rsps.add(**create_scenario_response)
         rsps.add(**create_config_response)
-        config = wrapper.create_test_config()
+        config = wrapper.create_test_config(1)
 
 
 def test_wrapper_create_scenario():
@@ -34,11 +33,9 @@ def test_wrapper_data():
 
 def test_wrapper_data():
     wrapper = APIWrapper('tests/sample.jmx')
-    wrapper.create_scenario = mock.Mock(**{'return_value.id': 333})
-    with responses.RequestsMock() as rsps:
-        mock_create_test_config = mock.Mock()
-        wrapper.client.create_test_config = mock_create_test_config
-        wrapper.create_test_config()
+    mock_create_test_config = mock.Mock()
+    wrapper.client.create_test_config = mock_create_test_config
+    wrapper.create_test_config(333)
     assert mock_create_test_config.call_args[0][0] == dict(
         {
             'name': wrapper.data['test_plan_name'],

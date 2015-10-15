@@ -21,8 +21,7 @@ class APIWrapper(object):
             )
         )
 
-    def create_test_config(self):
-        scenario = self.create_scenario()
+    def create_test_config(self, scenario_id):
         return self.client.create_test_config(
             {
                 'name': self.data['test_plan_name'],
@@ -32,7 +31,7 @@ class APIWrapper(object):
                     "load_schedule": [{"users": 10, "duration": 10}],
                     "tracks": [{
                         "clips": [{
-                            "user_scenario_id": scenario.id,
+                            "user_scenario_id": scenario_id,
                             "percent": 100
                         }],
                         "loadzone": loadimpact.LoadZone.AMAZON_US_ASHBURN
