@@ -33,10 +33,9 @@ def test_wrapper_data():
 
 def test_wrapper_data():
     wrapper = APIWrapper('tests/sample.jmx')
-    mock_create_test_config = mock.Mock()
-    wrapper.client.create_test_config = mock_create_test_config
+    wrapper.client = mock.Mock()
     wrapper.create_test_config(333)
-    assert mock_create_test_config.call_args[0][0] == dict(
+    assert wrapper.client.create_test_config.call_args[0][0] == dict(
         {
             'name': wrapper.data['test_plan_name'],
             'url': 'http://%s/' % wrapper.data['domain'],
