@@ -1,40 +1,8 @@
-import pytest
 from liapi.scriptcreator import LoadScriptGenerator
 
 
-TARGETS = [
-    {
-        'path': '/',
-        'method': 'GET'
-    },
-    {
-        'path': '/news.php',
-        'method': 'GET'
-    },
-    {
-        'path': '/',
-        'method': 'GET'
-    },
-    {
-        'path': '/flip_coin.php',
-        'method': 'GET'
-    },
-    {
-        'path': '/flip_coin.php',
-        'method': 'GET',
-        'arguments': {'bet': 'heads'}
-    }
-]
-
-
-DATA = {
-    "domain": "test.loadimpact.com",
-    "targets": TARGETS
-}
-
-
-def test_creator_generates_request_batch():
-    generator = LoadScriptGenerator(DATA)
+def test_creator_generates_request_batch(data):
+    generator = LoadScriptGenerator(data)
     expected = (
         'http.request_batch({'
             '{"GET", "http://test.loadimpact.com/"},'

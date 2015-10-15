@@ -3,6 +3,41 @@ import responses
 import json
 
 
+@pytest.fixture
+def targets():
+    return [
+        {
+            'path': '/',
+            'method': 'GET'
+        },
+        {
+            'path': '/news.php',
+            'method': 'GET'
+        },
+        {
+            'path': '/',
+            'method': 'GET'
+        },
+        {
+            'path': '/flip_coin.php',
+            'method': 'GET'
+        },
+        {
+            'path': '/flip_coin.php',
+            'method': 'GET',
+            'arguments': {'bet': 'heads'}
+        }
+    ]
+
+
+@pytest.fixture
+def data(targets):
+    return {
+        "domain": "test.loadimpact.com",
+        "targets": targets
+    }
+
+
 @pytest.fixture()
 def handler(load_scenario_response):
     from liapi.handler import APIWrapper
