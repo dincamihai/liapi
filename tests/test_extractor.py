@@ -1,5 +1,4 @@
 import pytest
-from jmxextractor.extractor import Extractor
 
 
 @pytest.fixture
@@ -11,6 +10,7 @@ def root():
 
 @pytest.fixture
 def extractor():
+    from liapi.extractor import Extractor
     return Extractor('tests/sample.jmx')
 
 
