@@ -10,7 +10,7 @@ def root():
 
 @pytest.fixture
 def extractor():
-    from liapi.extractor import Extractor
+    from apiwrapper.extractor import Extractor
     return Extractor('tests/sample.jmx')
 
 

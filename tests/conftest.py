@@ -40,7 +40,7 @@ def data(targets):
 
 @pytest.fixture()
 def handler(load_scenario_response):
-    from liapi.handler import APIWrapper
+    from apiwrapper.handler import APIWrapper
     with load_scenario_response:
         return APIWrapper('tests/sample.jmx')
 

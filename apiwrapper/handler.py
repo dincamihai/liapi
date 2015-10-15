@@ -1,7 +1,7 @@
 import os
 import loadimpact
-from liapi.scriptcreator import LoadScriptGenerator
-from liapi.extractor import Extractor
+from apiwrapper.scriptcreator import LoadScriptGenerator
+from apiwrapper.extractor import Extractor
 
 
 class APIWrapper(object):
@@ -26,8 +26,8 @@ class APIWrapper(object):
     def create_test_config(self):
         return self.client.create_test_config(
             {
-                'name': 'My test configuration',
-                'url': 'http://example.com/',
+                'name': self.data['test_plan_name'],
+                'url': 'http://%s/' % self.data['domain'],
                 'config': {
                     "user_type": "sbu",
                     "load_schedule": [{"users": 10, "duration": 10}],

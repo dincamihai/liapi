@@ -1,4 +1,4 @@
-from liapi.scriptcreator import LoadScriptGenerator
+from apiwrapper.scriptcreator import LoadScriptGenerator
 
 
 def test_creator_generates_request_batch(data):
