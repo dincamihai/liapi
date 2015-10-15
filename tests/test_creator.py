@@ -35,7 +35,6 @@ DATA = {
 
 def test_creator_generates_request_batch():
     generator = LoadScriptGenerator(DATA)
-    value = generator.get_script()
     expected = (
         'http.request_batch({'
             '{"GET", "http://test.loadimpact.com/"},'
@@ -45,4 +44,4 @@ def test_creator_generates_request_batch():
             '{"GET", "http://test.loadimpact.com/flip_coin.php?bet=heads"}'
         '})'
     )
-    assert value == expected
+    assert generator.script == expected
