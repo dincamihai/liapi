@@ -1,5 +1,6 @@
 import pytest
 from apiwrapper.extractor import Extractor
+from apiwrapper import exceptions
 
 
 @pytest.fixture
@@ -52,6 +53,12 @@ def test_extract_targets_arguments(extractor):
 def test_extract_missing_test_plan_name():
     extractor = Extractor('tests/sample_no_test_plan_name.jmx')
     assert extractor.data['test_plan_name'] == None
+
+
+def test_extract_missing_TestPlan():
+    with pytest.raises(exceptions.ExtractionException) as exc:
+        Extractor('tests/sample_no_test_plan_node.jmx')
+    assert exc.value.message == 'Unable to extract TEST_PLAN_NAME'
 
 
 def test_extract_invalid_file_path():

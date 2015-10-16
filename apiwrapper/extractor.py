@@ -1,4 +1,5 @@
 from lxml import etree
+from apiwrapper import exceptions
 
 
 class Extractor(object):
@@ -23,18 +24,29 @@ class Extractor(object):
             self.root = self.tree.getroot()
             self.data = self.get_data()
 
+    def _extract(self, key, source):
+        assert key in self.XPATHS, exceptions.InvalidKeyException('')
+        node = self.root.find(self.XPATHS[key])
+        if not node:
+            raise exceptions.ExtractionException('Unable to extract %s' % key)
+        else:
+            if source['type'] == 'attribute':
+                return node.get(source['attribute_name'])
+
     def get_data(self):
         return dict(
-            test_plan_name= self.root.find(
-                self.XPATHS['TEST_PLAN_NAME']).get('testname'),
-            num_threads = int(
+            test_plan_name=self._extract(
+                'TEST_PLAN_NAME',
+                source={'type': 'attribute', 'attribute_name': 'testname'}
+            ),
+            num_threads=int(
                 self.root.find(self.XPATHS['NUM_THREADS']).text),
-            ramp_time = int(
+            ramp_time=int(
                 self.root.find(self.XPATHS['RAMP_TIME']).text),
-            domain = self.root.find(self.XPATHS['DOMAIN']).text,
-            concurrent_pool = int(
+            domain=self.root.find(self.XPATHS['DOMAIN']).text,
+            concurrent_pool=int(
                 self.root.find(self.XPATHS['CONCURENT_POOL']).text),
-            targets = self.get_targets()
+            targets=self.get_targets()
         )
 
     def get_targets(self):
