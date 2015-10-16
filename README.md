@@ -1,6 +1,7 @@
 # liapi
 ### TODO
 - validate jmx with schema
+- handle data extraction errors
 - handle scenario creation errors
 - handle configuration creation errors
 - establish how data extracted from jmx translates to configuration params
