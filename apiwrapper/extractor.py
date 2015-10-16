@@ -5,11 +5,6 @@ from apiwrapper import exceptions
 class Extractor(object):
 
     XPATHS = dict(
-        TEST_PLAN_NAME="hashTree/TestPlan",
-        NUM_THREADS="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.num_threads']",
-        RAMP_TIME="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.ramp_time']",
-        DOMAIN="hashTree/hashTree/hashTree/ConfigTestElement/stringProp[@name='HTTPSampler.domain']",
-        CONCURENT_POOL="hashTree/hashTree/hashTree/ConfigTestElement/stringProp[@name='HTTPSampler.concurrentPool']",
         URLS="hashTree/hashTree/hashTree/hashTree/HTTPSamplerProxy",
         URLS_PATH="./stringProp[@name='HTTPSampler.path']",
         URLS_METHOD="./stringProp[@name='HTTPSampler.method']",
@@ -20,27 +15,27 @@ class Extractor(object):
 
     CONFIG = [
         dict(
-            key='TEST_PLAN_NAME',
+            path="hashTree/TestPlan",
             target='test_plan_name',
             source={'type': 'attribute', 'attribute_name': 'testname'}
         ),
         dict(
-            key='NUM_THREADS',
+            path="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.num_threads']",
             target='num_threads',
             source={'type': 'text', 'cast': 'int'}
         ),
         dict(
-            key='RAMP_TIME',
+            path="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.ramp_time']",
             target='ramp_time',
             source={'type': 'text', 'cast': 'int'}
         ),
         dict(
-            key='DOMAIN',
+            path="hashTree/hashTree/hashTree/ConfigTestElement/stringProp[@name='HTTPSampler.domain']",
             target='domain',
             source={'type': 'text'}
         ),
         dict(
-            key='CONCURENT_POOL',
+            path="hashTree/hashTree/hashTree/ConfigTestElement/stringProp[@name='HTTPSampler.concurrentPool']",
             target='concurrent_pool',
             source={'type': 'text', 'cast': 'int'}
         )
@@ -53,12 +48,10 @@ class Extractor(object):
             self.data = self.get_data()
 
     def _extract(self, data):
-        key = data['key']
         source = data['source']
-        target = data['target']
+        key = data['target']
         value = None
-        assert key in self.XPATHS, exceptions.InvalidKeyException('')
-        node = self.root.find(self.XPATHS[key])
+        node = self.root.find(data['path'])
         if node is None:
             raise exceptions.ExtractionException('Unable to extract %s' % key)
         else:
@@ -71,7 +64,7 @@ class Extractor(object):
                         value = int(node.text)
                     except:
                         raise exceptions.CastException('Unable to cast %s to %s' % (key, source['cast']))
-        return {target: value}
+        return {key: value}
 
     def get_data(self):
         data = dict()

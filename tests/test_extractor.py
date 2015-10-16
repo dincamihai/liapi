@@ -58,13 +58,13 @@ def test_extract_missing_test_plan_name():
 def test_cast_int_exception():
     with pytest.raises(exceptions.CastException) as exc:
         Extractor('tests/sample_bad_int.jmx')
-    assert exc.value.message == 'Unable to cast NUM_THREADS to int'
+    assert exc.value.message == 'Unable to cast num_threads to int'
 
 
 def test_extract_missing_TestPlan():
     with pytest.raises(exceptions.ExtractionException) as exc:
         Extractor('tests/sample_no_test_plan_node.jmx')
-    assert exc.value.message == 'Unable to extract TEST_PLAN_NAME'
+    assert exc.value.message == 'Unable to extract test_plan_name'
 
 
 def test_extract_invalid_file_path():
