@@ -4,7 +4,7 @@ from apiwrapper import exceptions
 
 class Extractor(object):
 
-    XPATHS=dict(
+    XPATHS = dict(
         TEST_PLAN_NAME="hashTree/TestPlan",
         NUM_THREADS="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.num_threads']",
         RAMP_TIME="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.ramp_time']",
@@ -18,6 +18,34 @@ class Extractor(object):
         URLS_ARGUMENTS_VALUE="./stringProp[@name='Argument.value']"
     )
 
+    CONFIG = [
+        dict(
+            key='TEST_PLAN_NAME',
+            target='test_plan_name',
+            source={'type': 'attribute', 'attribute_name': 'testname'}
+        ),
+        dict(
+            key='NUM_THREADS',
+            target='num_threads',
+            source={'type': 'text', 'cast': 'int'}
+        ),
+        dict(
+            key='RAMP_TIME',
+            target='ramp_time',
+            source={'type': 'text', 'cast': 'int'}
+        ),
+        dict(
+            key='DOMAIN',
+            target='domain',
+            source={'type': 'text'}
+        ),
+        dict(
+            key='CONCURENT_POOL',
+            target='concurrent_pool',
+            source={'type': 'text', 'cast': 'int'}
+        )
+    ]
+
     def __init__(self, jmx_path):
         with open(jmx_path, 'rb') as jmx:
             self.tree = etree.parse(jmx)
@@ -27,56 +55,31 @@ class Extractor(object):
     def _extract(self, data):
         key = data['key']
         source = data['source']
+        target = data['target']
+        value = None
         assert key in self.XPATHS, exceptions.InvalidKeyException('')
         node = self.root.find(self.XPATHS[key])
         if node is None:
             raise exceptions.ExtractionException('Unable to extract %s' % key)
         else:
             if source['type'] == 'attribute':
-                return node.get(source['attribute_name'])
+                value = node.get(source['attribute_name'])
             elif source['type'] == 'text':
-                out = node.text
+                value = node.text
                 if source.get('cast') == 'int':
                     try:
-                        out = int(node.text)
+                        value = int(node.text)
                     except:
                         raise exceptions.CastException('Unable to cast %s to %s' % (key, source['cast']))
-                return out
+        return {target: value}
 
     def get_data(self):
-        return dict(
-            test_plan_name=self._extract(
-                dict(
-                    key='TEST_PLAN_NAME',
-                    source={'type': 'attribute', 'attribute_name': 'testname'}
-                )
-            ),
-            num_threads=self._extract(
-                dict(
-                    key='NUM_THREADS',
-                    source={'type': 'text', 'cast': 'int'}
-                )
-            ),
-            ramp_time=self._extract(
-                dict(
-                    key='RAMP_TIME',
-                    source={'type': 'text', 'cast': 'int'}
-                )
-            ),
-            domain=self._extract(
-                dict(
-                    key='DOMAIN',
-                    source={'type': 'text'}
-                )
-            ),
-            concurrent_pool=self._extract(
-                dict(
-                    key='CONCURENT_POOL',
-                    source={'type': 'text', 'cast': 'int'}
-                )
-            ),
-            targets=self.get_targets()
-        )
+        data = dict()
+        for item in self.CONFIG:
+            extracted = self._extract(item)
+            data.update(extracted)
+        data['targets'] = self.get_targets()
+        return data
 
     def get_targets(self):
         urls = []
