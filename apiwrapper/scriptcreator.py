@@ -6,7 +6,7 @@ class LoadScriptGenerator(object):
     def __init__(self, domain, targets):
         self.domain = domain
         self.targets = targets
-        self.script = self.get_script()
+        self.script = self._get_script()
 
     def _get_batch_item(self, item_data):
         query_string = ''
@@ -25,7 +25,7 @@ class LoadScriptGenerator(object):
             query_string=query_string
         )
 
-    def get_script(self):
+    def _get_script(self):
         script_pattern = (
             'http.request_batch({'
                 '{{content}}'
