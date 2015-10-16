@@ -1,4 +1,5 @@
 import pytest
+from apiwrapper.extractor import Extractor
 
 
 @pytest.fixture
@@ -10,7 +11,6 @@ def root():
 
 @pytest.fixture
 def extractor():
-    from apiwrapper.extractor import Extractor
     return Extractor('tests/sample.jmx')
 
 
@@ -47,3 +47,13 @@ def test_extract_urls_methods(extractor):
 def test_extract_targets_arguments(extractor):
     expected = [None, None, None, None, {'bet': 'heads'}]
     assert [url.get('arguments', None) for url in extractor.data['targets']] == expected
+
+
+def test_extract_missing_test_plan_name():
+    extractor = Extractor('tests/sample_no_test_plan_name.jmx')
+    assert extractor.data['test_plan_name'] == None
+
+
+def test_extract_invalid_file_path():
+    with pytest.raises(IOError):
+        Extractor('tests/missing_file.jmx')

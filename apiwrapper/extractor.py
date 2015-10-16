@@ -18,7 +18,7 @@ class Extractor(object):
     )
 
     def __init__(self, jmx_path):
-        with open('tests/sample.jmx', 'rb') as jmx:
+        with open(jmx_path, 'rb') as jmx:
             self.tree = etree.parse(jmx)
             self.root = self.tree.getroot()
             self.data = self.get_data()
