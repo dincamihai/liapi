@@ -16,27 +16,27 @@ class Extractor(object):
     CONFIG = [
         dict(
             path="hashTree/TestPlan",
-            target='test_plan_name',
+            key='test_plan_name',
             source={'type': 'attribute', 'attribute_name': 'testname'}
         ),
         dict(
             path="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.num_threads']",
-            target='num_threads',
+            key='num_threads',
             source={'type': 'text', 'cast': 'int'}
         ),
         dict(
             path="hashTree/hashTree/ThreadGroup/stringProp[@name='ThreadGroup.ramp_time']",
-            target='ramp_time',
+            key='ramp_time',
             source={'type': 'text', 'cast': 'int'}
         ),
         dict(
             path="hashTree/hashTree/hashTree/ConfigTestElement/stringProp[@name='HTTPSampler.domain']",
-            target='domain',
+            key='domain',
             source={'type': 'text'}
         ),
         dict(
             path="hashTree/hashTree/hashTree/ConfigTestElement/stringProp[@name='HTTPSampler.concurrentPool']",
-            target='concurrent_pool',
+            key='concurrent_pool',
             source={'type': 'text', 'cast': 'int'}
         )
     ]
@@ -49,11 +49,10 @@ class Extractor(object):
 
     def _extract(self, data):
         source = data['source']
-        key = data['target']
         value = None
         node = self.root.find(data['path'])
         if node is None:
-            raise exceptions.ExtractionException('Unable to extract %s' % key)
+            raise exceptions.ExtractionException('Unable to extract %s' % data['key'])
         else:
             if source['type'] == 'attribute':
                 value = node.get(source['attribute_name'])
@@ -63,8 +62,8 @@ class Extractor(object):
                     try:
                         value = int(node.text)
                     except:
-                        raise exceptions.CastException('Unable to cast %s to %s' % (key, source['cast']))
-        return {key: value}
+                        raise exceptions.CastException('Unable to cast %s to %s' % (data['key'], source['cast']))
+        return {data['key']: value}
 
     def get_data(self):
         data = dict()
