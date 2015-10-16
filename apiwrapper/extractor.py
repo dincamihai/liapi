@@ -34,7 +34,7 @@ class Extractor(object):
                 return node.get(source['attribute_name'])
             elif source['type'] == 'text':
                 out = node.text
-                if source['cast'] == 'int':
+                if source.get('cast') == 'int':
                     try:
                         out = int(node.text)
                     except:
@@ -51,11 +51,18 @@ class Extractor(object):
                 'NUM_THREADS',
                 source={'type': 'text', 'cast': 'int'}
             ),
-            ramp_time=int(
-                self.root.find(self.XPATHS['RAMP_TIME']).text),
-            domain=self.root.find(self.XPATHS['DOMAIN']).text,
-            concurrent_pool=int(
-                self.root.find(self.XPATHS['CONCURENT_POOL']).text),
+            ramp_time=self._extract(
+                'RAMP_TIME',
+                source={'type': 'text', 'cast': 'int'}
+            ),
+            domain=self._extract(
+                'DOMAIN',
+                source={'type': 'text'}
+            ),
+            concurrent_pool=self._extract(
+                'CONCURENT_POOL',
+                source={'type': 'text', 'cast': 'int'}
+            ),
             targets=self.get_targets()
         )
 
