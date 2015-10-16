@@ -55,6 +55,12 @@ def test_extract_missing_test_plan_name():
     assert extractor.data['test_plan_name'] == None
 
 
+def test_cast_int_exception():
+    with pytest.raises(exceptions.CastException) as exc:
+        Extractor('tests/sample_bad_int.jmx')
+    assert exc.value.message == 'Unable to cast NUM_THREADS to int'
+
+
 def test_extract_missing_TestPlan():
     with pytest.raises(exceptions.ExtractionException) as exc:
         Extractor('tests/sample_no_test_plan_node.jmx')

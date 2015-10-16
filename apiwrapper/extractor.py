@@ -27,11 +27,19 @@ class Extractor(object):
     def _extract(self, key, source):
         assert key in self.XPATHS, exceptions.InvalidKeyException('')
         node = self.root.find(self.XPATHS[key])
-        if not node:
+        if node is None:
             raise exceptions.ExtractionException('Unable to extract %s' % key)
         else:
             if source['type'] == 'attribute':
                 return node.get(source['attribute_name'])
+            elif source['type'] == 'text':
+                out = node.text
+                if source['cast'] == 'int':
+                    try:
+                        out = int(node.text)
+                    except:
+                        raise exceptions.CastException('Unable to cast %s to %s' % (key, source['cast']))
+                return out
 
     def get_data(self):
         return dict(
@@ -39,8 +47,10 @@ class Extractor(object):
                 'TEST_PLAN_NAME',
                 source={'type': 'attribute', 'attribute_name': 'testname'}
             ),
-            num_threads=int(
-                self.root.find(self.XPATHS['NUM_THREADS']).text),
+            num_threads=self._extract(
+                'NUM_THREADS',
+                source={'type': 'text', 'cast': 'int'}
+            ),
             ramp_time=int(
                 self.root.find(self.XPATHS['RAMP_TIME']).text),
             domain=self.root.find(self.XPATHS['DOMAIN']).text,
