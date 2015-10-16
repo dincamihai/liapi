@@ -24,7 +24,9 @@ class Extractor(object):
             self.root = self.tree.getroot()
             self.data = self.get_data()
 
-    def _extract(self, key, source):
+    def _extract(self, data):
+        key = data['key']
+        source = data['source']
         assert key in self.XPATHS, exceptions.InvalidKeyException('')
         node = self.root.find(self.XPATHS[key])
         if node is None:
@@ -44,24 +46,34 @@ class Extractor(object):
     def get_data(self):
         return dict(
             test_plan_name=self._extract(
-                'TEST_PLAN_NAME',
-                source={'type': 'attribute', 'attribute_name': 'testname'}
+                dict(
+                    key='TEST_PLAN_NAME',
+                    source={'type': 'attribute', 'attribute_name': 'testname'}
+                )
             ),
             num_threads=self._extract(
-                'NUM_THREADS',
-                source={'type': 'text', 'cast': 'int'}
+                dict(
+                    key='NUM_THREADS',
+                    source={'type': 'text', 'cast': 'int'}
+                )
             ),
             ramp_time=self._extract(
-                'RAMP_TIME',
-                source={'type': 'text', 'cast': 'int'}
+                dict(
+                    key='RAMP_TIME',
+                    source={'type': 'text', 'cast': 'int'}
+                )
             ),
             domain=self._extract(
-                'DOMAIN',
-                source={'type': 'text'}
+                dict(
+                    key='DOMAIN',
+                    source={'type': 'text'}
+                )
             ),
             concurrent_pool=self._extract(
-                'CONCURENT_POOL',
-                source={'type': 'text', 'cast': 'int'}
+                dict(
+                    key='CONCURENT_POOL',
+                    source={'type': 'text', 'cast': 'int'}
+                )
             ),
             targets=self.get_targets()
         )
