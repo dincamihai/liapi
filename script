@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+import argparse
+import loadimpact
+from apiwrapper.handler import JMXHandler
+
+
+if __name__=='__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('jmx_file_path')
+    args = parser.parse_args()
+    try:
+        handler = JMXHandler(args.jmx_file_path)
+        scenario = handler.create_scenario()
+    except loadimpact.exceptions.MissingApiTokenError:
+        print 'please set LOAD_IMPACT_TOKEN env variable'
+    except loadimpact.exceptions.UnauthorizedError as err:
+        print 'invalid LOAD_IMPACT_TOKEN'
+    except IOError as ioerr:
+        print '{strerror}: {filename}'.format(
+            strerror=ioerr.strerror,
+            filename=ioerr.filename
+        )
