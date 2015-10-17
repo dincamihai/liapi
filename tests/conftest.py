@@ -1,6 +1,7 @@
 import pytest
 import responses
 import json
+import os
 
 
 @pytest.fixture
@@ -40,6 +41,7 @@ def data(targets):
 
 @pytest.fixture()
 def wrapper():
+    os.environ['LOAD_IMPACT_TOKEN'] = '123fake456'
     from apiwrapper.handler import JMXHandler
     return JMXHandler('tests/sample.jmx')
 

@@ -15,7 +15,7 @@ run tests
 ---------
 .. code-block:: bash
 
-   LOAD_IMPACT_TOKEN=<token> py.test
+   py.test
 
 task management
 ---------------
