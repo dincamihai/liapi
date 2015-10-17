@@ -39,9 +39,13 @@ def data(targets):
     }
 
 
-@pytest.fixture()
-def wrapper():
+@pytest.fixture
+def set_LOAD_IMPACT_TOKEN():
     os.environ['LOAD_IMPACT_TOKEN'] = '123fake456'
+
+
+@pytest.fixture()
+def wrapper(set_LOAD_IMPACT_TOKEN):
     from apiwrapper.handler import JMXHandler
     return JMXHandler('tests/sample.jmx')
 
