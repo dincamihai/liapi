@@ -19,7 +19,8 @@ run tests
 task management
 ---------------
 
-### TODO
+TODO
+````
 - validate jmx with schema
 - handle data extraction errors
 - handle scenario creation errors
@@ -38,6 +39,7 @@ task management
  - handle all errors
 
 
-### DONE
+DONE
+````
 - improve extractor to allow accept flexible json extraction instructions
 - script creates config (not just scenario)
