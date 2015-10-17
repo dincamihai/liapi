@@ -1,4 +1,24 @@
 # liapi
+
+install
+-------
+.. code-block:: bash
+
+   git clone git@github.com:dincamihai/csvapi.git
+   cd csvapi
+   virtualenv sandbox
+   . sandbox/bin/activate
+   pip install -r requirements-dev.txt
+
+run tests
+---------
+.. code-block:: bash
+
+   LOAD_IMPACT_TOKEN=<token> py.test
+
+task management
+---------------
+
 ### TODO
 - validate jmx with schema
 - handle data extraction errors
