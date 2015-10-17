@@ -13,6 +13,8 @@ if __name__=='__main__':
     try:
         handler = JMXHandler(args.jmx_file_path)
         scenario = handler.create_scenario()
+        config = handler.create_test_config(scenario.id)
+        print 'Test config with id %s created.' % config.id
     except loadimpact.exceptions.MissingApiTokenError:
         print 'please set LOAD_IMPACT_TOKEN env variable'
     except loadimpact.exceptions.UnauthorizedError as err:
