@@ -1,6 +1,5 @@
 # liapi
 ### TODO
-- improve extractor to allow accept flexible json extraction instructions
 - validate jmx with schema
 - handle data extraction errors
 - handle scenario creation errors
@@ -13,5 +12,9 @@
     | domain         | url [param]  |
 
 - improve script:
- - create config (not just scenario)
  - handle all errors
+
+
+### DONE
+- improve extractor to allow accept flexible json extraction instructions
+- script creates config (not just scenario)
