@@ -1,4 +1,5 @@
 import os
+import json
 import loadimpact
 from apiwrapper.scriptcreator import LoadScriptGenerator
 from apiwrapper.extractor import Extractor
@@ -8,7 +9,8 @@ class JMXHandler(object):
 
     def __init__(self, jmx_file_path):
         TOKEN = os.environ.get('LOAD_IMPACT_TOKEN', '')
-        self.data = Extractor(jmx_file_path).data
+        with open('apiwrapper/config.json', 'rb') as config_file:
+            self.data = Extractor(jmx_file_path, json.load(config_file)).data
         self.client = loadimpact.ApiTokenClient(api_token=TOKEN)
 
     def create_scenario(self):

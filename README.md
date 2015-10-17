@@ -11,3 +11,6 @@
     |----------------|--------------|
     | test_plan_name | name         |
     | domain         | url [param]  |
+- improve script:
+ - create config (not just scenario)
+ - handle all errors

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<elementProp name="bet" elementType="HTTPArgument">
+    <stringProp name="Argument.name">bet</stringProp>
+    <stringProp name="Argument.value">heads</stringProp>
+</elementProp>

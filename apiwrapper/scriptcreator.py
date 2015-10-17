@@ -9,10 +9,15 @@ class LoadScriptGenerator(object):
         self.script = self._get_script()
 
     def _get_batch_item(self, item_data):
-        query_string = ''
+        query_string_bits = []
         scheme = 'http'
-        if item_data.get('arguments', None):
-            query_string = "?%s" % urllib.urlencode(item_data['arguments'])
+        query_string = ''
+        for item in item_data.get('arguments', []):
+            query_string_bits.append(
+                urllib.urlencode({item['name']: item['value']})
+            )
+        if query_string_bits:
+            query_string = '?%s' % '&'.join(query_string_bits)
         return (
             '{{'
                 '"{method}", "{scheme}://{domain}{path}{query_string}"'
