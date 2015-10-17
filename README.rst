@@ -5,8 +5,8 @@ install
 -------
 .. code-block:: bash
 
-   git clone git@github.com:dincamihai/liapi.git
-   cd liapi
+   git clone git@github.com:dincamihai/liwrapper.git
+   cd liwrapper
    virtualenv sandbox
    . sandbox/bin/activate
    pip install -r requirements-dev.txt
