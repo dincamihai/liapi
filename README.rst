@@ -5,8 +5,8 @@ install
 -------
 .. code-block:: bash
 
-   git clone git@github.com:dincamihai/csvapi.git
-   cd csvapi
+   git clone git@github.com:dincamihai/liapi.git
+   cd liapi
    virtualenv sandbox
    . sandbox/bin/activate
    pip install -r requirements-dev.txt
