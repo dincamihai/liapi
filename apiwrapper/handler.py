@@ -12,7 +12,6 @@ class JMXHandler(object):
         self.token = os.environ.get('LOAD_IMPACT_TOKEN', '')
         with open('apiwrapper/config.json', 'rb') as config_file:
             self.data = Extractor(jmx_file_path, json.load(config_file)).data
-        self.client = loadimpact.ApiTokenClient(api_token=self.token)
 
     def create_scenario(self):
         resp = requests.post(
@@ -28,11 +27,13 @@ class JMXHandler(object):
             },
             auth=(self.token, '')
         )
+        resp.raise_for_status()
         return resp.json()['id']
 
     def create_test_config(self, scenario_id):
-        return self.client.create_test_config(
-            {
+        resp = requests.post(
+            url='https://api.loadimpact.com/v2/test-configs',
+            data={
                 'name': self.data['test_plan_name'],
                 'url': 'http://%s/' % self.data['domain'],
                 'config': {
@@ -46,5 +47,10 @@ class JMXHandler(object):
                         "loadzone": loadimpact.LoadZone.AMAZON_US_ASHBURN
                     }]
                 }
-            }
+            },
+            headers={
+                "Content-Type": "application/json"
+            },
+            auth=(self.token, '')
         )
+        return resp.json()['id']

@@ -1,6 +1,8 @@
 import mock
+import pytest
 import responses
 from apiwrapper.handler import JMXHandler
+from apiwrapper import exceptions
 
 
 def test_create_scenario(wrapper, create_scenario_response):
@@ -13,33 +15,10 @@ def test_create_scenario(wrapper, create_scenario_response):
 def test_create_config(wrapper, create_config_response):
     with responses.RequestsMock() as rsps:
         rsps.add(**create_config_response)
-        config = wrapper.create_test_config(1)
-        assert config.id == 3204290
+        config_id = wrapper.create_test_config(1)
+        assert config_id == 3204290
 
 
 def test_wrapper_data():
     wrapper = JMXHandler('tests/sample.jmx')
     assert wrapper.data
-
-
-def test_create_test_config_call():
-    wrapper = JMXHandler('tests/sample.jmx')
-    wrapper.client = mock.Mock()
-    wrapper.create_test_config(333)
-    assert wrapper.client.create_test_config.call_args[0][0] == dict(
-        {
-            'name': wrapper.data['test_plan_name'],
-            'url': 'http://%s/' % wrapper.data['domain'],
-            'config': {
-                "user_type": "sbu",
-                "load_schedule": [{"users": 10, "duration": 10}],
-                "tracks": [{
-                    "clips": [{
-                        "user_scenario_id": 333,
-                        "percent": 100
-                    }],
-                    "loadzone": 'amazon:us:ashburn'
-                }]
-            }
-        }
-    )
