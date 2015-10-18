@@ -22,7 +22,6 @@ task management
 
 TODO
 ````
-- create separate extractor python package and use it
 - convert wrapper to package with exacutable script
 - establish how data extracted from jmx translates to configuration params
 
@@ -45,3 +44,4 @@ DONE
 - handle data extraction errors
 - handle scenario creation errors 400 and 401 as an example and use raise_for_status to handle the rest
 - handle configuration creation errors using raise_for_status
+- create separate extractor python package and use it
