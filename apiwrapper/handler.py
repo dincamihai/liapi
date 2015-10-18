@@ -23,10 +23,6 @@ class JMXHandler(object):
                 name="test_scenario"
             )
         )
-        payload = dict(
-            load_script="abc",
-            name="abc"
-        )
         resp = requests.post(
             'https://api.loadimpact.com/v2/user-scenarios',
             data=payload,
