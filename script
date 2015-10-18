@@ -3,6 +3,7 @@
 
 import argparse
 import loadimpact
+import requests
 from apiwrapper.handler import JMXHandler
 
 
@@ -12,13 +13,11 @@ if __name__=='__main__':
     args = parser.parse_args()
     try:
         handler = JMXHandler(args.jmx_file_path)
-        scenario = handler.create_scenario()
-        config = handler.create_test_config(scenario.id)
-        print 'Test config with id %s created.' % config.id
-    except loadimpact.exceptions.MissingApiTokenError:
-        print 'please set LOAD_IMPACT_TOKEN env variable'
-    except loadimpact.exceptions.UnauthorizedError as err:
-        print 'invalid LOAD_IMPACT_TOKEN'
+        scenario_id = handler.create_scenario()
+        config_id = handler.create_test_config(scenario_id)
+        print 'Test config with id %s created.' % config_id
+    except requests.exceptions.HTTPError as exc:
+        print exc.message
     except IOError as ioerr:
         print '{strerror}: {filename}'.format(
             strerror=ioerr.strerror,
