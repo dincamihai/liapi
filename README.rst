@@ -33,8 +33,7 @@ TODO
     | domain         | url [param]  |
     +----------------+--------------+
 - validate jmx with xml schema
-- improve script:
- - handle all errors
+- check if there are unhandled exceptions in script
 - validate json extractor configuration and handle errors
 
 DONE
