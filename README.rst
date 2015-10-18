@@ -22,11 +22,8 @@ task management
 
 TODO
 ````
-- validate jmx with xml schema
-- improve script:
- - handle all errors
-- validate json extractor configuration and handle errors
-- create separate extractor python package
+- create separate extractor python package and use it
+- convert wrapper to package with exacutable script
 - establish how data extracted from jmx translates to configuration params
 
     +----------------+--------------+
@@ -36,6 +33,10 @@ TODO
     +----------------+--------------+
     | domain         | url [param]  |
     +----------------+--------------+
+- validate jmx with xml schema
+- improve script:
+ - handle all errors
+- validate json extractor configuration and handle errors
 
 DONE
 ````

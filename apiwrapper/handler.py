@@ -3,7 +3,7 @@ import json
 import requests
 import json
 from apiwrapper.scriptcreator import LoadScriptGenerator
-from apiwrapper.extractor import Extractor
+from jmxextractor.extractor import Extractor
 from apiwrapper import exceptions
 
 
