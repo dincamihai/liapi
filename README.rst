@@ -17,6 +17,12 @@ run tests
 
    py.test
 
+use
+---
+.. code-block:: bash
+
+   LOAD_IMPACT_TOKEN=<token> ./script tests/sample.jmx
+
 task management
 ---------------
 
