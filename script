@@ -2,9 +2,9 @@
 # encoding: utf-8
 
 import argparse
-import loadimpact
 import requests
 from apiwrapper.handler import JMXHandler
+from apiwrapper import exceptions
 
 
 if __name__=='__main__':
@@ -17,6 +17,10 @@ if __name__=='__main__':
         config_id = handler.create_test_config(scenario_id)
         print 'Test config with id %s created.' % config_id
     except requests.exceptions.HTTPError as exc:
+        print exc.message
+    except (
+        exceptions.BadRequestException, exceptions.MissingAPITokenException
+    ) as exc:
         print exc.message
     except IOError as ioerr:
         print '{strerror}: {filename}'.format(

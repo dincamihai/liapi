@@ -23,8 +23,6 @@ task management
 TODO
 ````
 - validate jmx with xml schema
-- handle scenario creation errors (use API instead of SDK)
-- handle configuration creation errors (use API instead of SDK)
 - improve script:
  - handle all errors
 - validate json extractor configuration and handle errors
@@ -44,3 +42,5 @@ DONE
 - improve extractor to allow accept flexible json extraction instructions
 - script creates config (not just scenario)
 - handle data extraction errors
+- handle scenario creation errors 400 and 401 as an example and use raise_for_status to handle the rest
+- handle configuration creation errors using raise_for_status

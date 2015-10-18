@@ -12,3 +12,7 @@ class InvalidKeyException(Exception):
 
 class BadRequestException(Exception):
     pass
+
+
+class MissingAPITokenException(Exception):
+    pass

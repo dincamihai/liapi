@@ -19,12 +19,34 @@ def create_scenario_response_400(request):
     )
 
 
+@pytest.fixture(scope='function')
+def create_scenario_response_401(request):
+    return dict(
+        method=responses.POST,
+        url='https://api.loadimpact.com/v2/user-scenarios',
+        status=401,
+        content_type='application/json',
+        body=json.dumps({u'message': u'Invalid credentials provided'})
+    )
+
+
 def test_create_scenario_400(wrapper, create_scenario_response_400):
     with pytest.raises(exceptions.BadRequestException) as exc:
         with responses.RequestsMock() as rsps:
             rsps.add(**create_scenario_response_400)
             wrapper.create_scenario()
     assert exc.value.message == "Could not create scenario. Bad payload."
+
+
+def test_create_scenario_401(wrapper, create_scenario_response_401):
+    with pytest.raises(exceptions.MissingAPITokenException) as exc:
+        with responses.RequestsMock() as rsps:
+            rsps.add(**create_scenario_response_401)
+            wrapper.create_scenario()
+    assert exc.value.message == (
+        "Could not create scenario. Missing or invalid API token."
+        "Make sure LOAD_IMPACT_TOKEN env var is set."
+    )
 
 
 def test_create_scenario(wrapper, create_scenario_response):

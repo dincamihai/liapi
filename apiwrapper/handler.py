@@ -1,6 +1,5 @@
 import os
 import json
-import loadimpact
 import requests
 import json
 from apiwrapper.scriptcreator import LoadScriptGenerator
@@ -38,6 +37,11 @@ class JMXHandler(object):
             raise exceptions.BadRequestException(
                 "Could not create scenario. Bad payload."
             )
+        elif resp.status_code == 401:
+            raise exceptions.MissingAPITokenException(
+                "Could not create scenario. Missing or invalid API token."
+                "Make sure LOAD_IMPACT_TOKEN env var is set."
+            )
         resp.raise_for_status()
         return resp.json()['id']
 
@@ -53,7 +57,7 @@ class JMXHandler(object):
                         "user_scenario_id": scenario_id,
                         "percent": 100
                     }],
-                    "loadzone": loadimpact.LoadZone.AMAZON_US_ASHBURN
+                    "loadzone": "amazon:us:ashburn"
                 }]
             }
         }
