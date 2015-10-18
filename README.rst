@@ -27,7 +27,7 @@ TODO
 - handle configuration creation errors (use API instead of SDK)
 - improve script:
  - handle all errors
-- validate json configuration and handle errors
+- validate json extractor configuration and handle errors
 - create separate extractor python package
 - establish how data extracted from jmx translates to configuration params
 

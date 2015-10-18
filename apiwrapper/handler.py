@@ -5,6 +5,7 @@ import requests
 import json
 from apiwrapper.scriptcreator import LoadScriptGenerator
 from apiwrapper.extractor import Extractor
+from apiwrapper import exceptions
 
 
 class JMXHandler(object):
@@ -15,18 +16,28 @@ class JMXHandler(object):
             self.data = Extractor(jmx_file_path, json.load(config_file)).data
 
     def create_scenario(self):
+        payload = json.dumps(
+            dict(
+                load_script=LoadScriptGenerator(
+                    self.data['domain'], self.data['targets']
+                ).script,
+                name="test_scenario"
+            )
+        )
         payload = dict(
-            load_script=LoadScriptGenerator(
-                self.data['domain'], self.data['targets']
-            ).script,
-            name="test_scenario"
+            load_script="abc",
+            name="abc"
         )
         resp = requests.post(
             'https://api.loadimpact.com/v2/user-scenarios',
-            data=json.dumps(payload),
+            data=payload,
             headers={"Content-Type": "application/json"},
             auth=(self.token, '')
         )
+        if resp.status_code == 400:
+            raise exceptions.BadRequestException(
+                "Could not create scenario. Bad payload."
+            )
         resp.raise_for_status()
         return resp.json()['id']
 

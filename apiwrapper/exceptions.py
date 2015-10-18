@@ -8,3 +8,7 @@ class CastException(Exception):
 
 class InvalidKeyException(Exception):
     pass
+
+
+class BadRequestException(Exception):
+    pass
