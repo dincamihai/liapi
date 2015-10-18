@@ -3,6 +3,7 @@
 
 import argparse
 import requests
+import jmxextractor
 from apiwrapper.handler import JMXHandler
 from apiwrapper import exceptions
 
@@ -13,17 +14,22 @@ if __name__=='__main__':
     args = parser.parse_args()
     try:
         handler = JMXHandler(args.jmx_file_path)
-        scenario_id = handler.create_scenario()
-        config_id = handler.create_test_config(scenario_id)
-        print 'Test config with id %s created.' % config_id
-    except requests.exceptions.HTTPError as exc:
+    except jmxextractor.exceptions.ExtractorException as exc:
         print exc.message
-    except (
-        exceptions.BadRequestException, exceptions.MissingAPITokenException
-    ) as exc:
-        print exc.message
-    except IOError as ioerr:
-        print '{strerror}: {filename}'.format(
-            strerror=ioerr.strerror,
-            filename=ioerr.filename
-        )
+    else:
+        try:
+            scenario_id = handler.create_scenario()
+            config_id = handler.create_test_config(scenario_id)
+        except requests.exceptions.HTTPError as exc:
+            print exc.message
+        except (
+            exceptions.BadRequestException, exceptions.MissingAPITokenException
+        ) as exc:
+            print exc.message
+        except IOError as ioerr:
+            print '{strerror}: {filename}'.format(
+                strerror=ioerr.strerror,
+                filename=ioerr.filename
+            )
+        else:
+            print 'Test config with id %s created.' % config_id
